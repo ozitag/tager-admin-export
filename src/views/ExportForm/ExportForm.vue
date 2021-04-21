@@ -99,12 +99,12 @@ export default defineComponent({
 
     /** Form state */
 
-    const defaultExtension = formatOptionList.value[0].toString().toLowerCase();
+    const defaultExtension = formatOptionList.value[0];
 
     const errors = ref<Record<string, string>>({});
     const values = ref<FormValues>({
       strategy: null,
-      filename: `export.${defaultExtension.value}`,
+      filename: `export.${defaultExtension.value.toLowerCase()}`,
       format: defaultExtension,
     });
     const isSubmitting = ref<boolean>(false);
