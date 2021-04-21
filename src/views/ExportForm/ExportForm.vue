@@ -54,6 +54,7 @@ import {
 
 import { createExport, getStrategyList } from '../../services/requests';
 import { getExportListUrl } from '../../utils/paths';
+import { replaceFileExtension } from '../../utils/common';
 
 import {
   convertExportFormValuesToCreationPayload,
@@ -91,28 +92,32 @@ export default defineComponent({
 
     /** Format **/
 
-    const formatOptionList = computed(() => [
+    const formatOptionList = computed<Array<OptionType>>(() => [
       { value: 'csv', label: 'CSV' },
       { value: 'xls', label: 'XLS' },
     ]);
 
     /** Form state */
 
+    const defaultExtension = formatOptionList.value[0];
+
     const errors = ref<Record<string, string>>({});
     const values = ref<FormValues>({
       strategy: null,
-      filename: 'export.csv',
-      format: formatOptionList.value[0],
+      filename: `export.${defaultExtension.value}`,
+      format: defaultExtension,
     });
     const isSubmitting = ref<boolean>(false);
 
     watch(
       () => values.value.format,
       () => {
-        values.value.filename = `${values.value.filename.replace(
-          /\.[^.$]+$/,
-          ''
-        )}.${values.value.format?.value}`;
+        const newExtension = values.value.format?.value;
+
+        values.value.filename = replaceFileExtension(
+          values.value.filename,
+          newExtension || ''
+        );
       }
     );
 
