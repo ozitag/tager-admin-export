@@ -112,7 +112,7 @@ export default defineComponent({
     watch(
       () => values.value.format,
       () => {
-        const newExtension = values.value.format?.value;
+        const newExtension = values.value.format?.value.toLowerCase();
 
         values.value.filename = replaceFileExtension(
           values.value.filename,
