@@ -93,8 +93,8 @@ export default defineComponent({
     /** Format **/
 
     const formatOptionList = computed<Array<OptionType>>(() => [
-      { value: 'csv', label: 'CSV' },
-      { value: 'xls', label: 'XLS' },
+      { value: 'CSV', label: 'CSV' },
+      { value: 'XLS', label: 'XLS' },
     ]);
 
     /** Form state */
