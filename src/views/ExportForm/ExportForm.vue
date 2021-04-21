@@ -99,7 +99,7 @@ export default defineComponent({
 
     /** Form state */
 
-    const defaultExtension = formatOptionList.value[0];
+    const defaultExtension = formatOptionList.value[0].toLowerCase();
 
     const errors = ref<Record<string, string>>({});
     const values = ref<FormValues>({
