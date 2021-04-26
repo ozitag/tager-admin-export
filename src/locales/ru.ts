@@ -20,6 +20,9 @@ const RU: typeof EN = {
   createdErrorMessage: 'Создание экспорта не удалось',
   filename: 'Имя файла',
   format: 'Формат',
+  delimiter: 'Разделитель',
+  comma: 'Запятая',
+  semicolon: 'Точка с запятой',
 };
 
 export default RU;
