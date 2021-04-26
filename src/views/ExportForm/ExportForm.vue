@@ -25,6 +25,17 @@
             :label="$t('export:format')"
             name="format"
           />
+
+          <div />
+
+          <form-field-select
+            v-if="shouldDisplayDelimiter"
+            v-model="values.delimiter"
+            :options="delimiterOptionList"
+            :error="errors.delimiter"
+            :label="$t('export:delimiter')"
+            name="delimiter"
+          />
         </div>
       </template>
     </form>
@@ -95,19 +106,40 @@ export default defineComponent({
     const formatOptionList = computed<Array<OptionType>>(() => [
       { value: 'CSV', label: 'CSV' },
       { value: 'XLS', label: 'XLS' },
+      { value: 'XML', label: 'XML' },
+      { value: 'YAML', label: 'YAML' },
+      { value: 'JSON', label: 'JSON' },
+      { value: 'TXT', label: 'TXT' },
+    ]);
+
+    function isCSVFormat(format: string): boolean {
+      return format === 'CSV';
+    }
+
+    /** Delimiter **/
+
+    const delimiterOptionList = computed<Array<OptionType>>(() => [
+      { value: ',', label: t('export:comma') },
+      { value: ';', label: t('export:semicolon') },
     ]);
 
     /** Form state */
 
     const defaultExtension = formatOptionList.value[0];
+    const defaultDelimiter = delimiterOptionList.value[0];
 
     const errors = ref<Record<string, string>>({});
     const values = ref<FormValues>({
       strategy: null,
       filename: `export.${defaultExtension.value.toLowerCase()}`,
       format: defaultExtension,
+      delimiter: defaultDelimiter,
     });
     const isSubmitting = ref<boolean>(false);
+
+    const shouldDisplayDelimiter = ref<boolean>(
+      isCSVFormat(values.value.format?.value ?? '')
+    );
 
     watch(
       () => values.value.format,
@@ -117,6 +149,10 @@ export default defineComponent({
         values.value.filename = replaceFileExtension(
           values.value.filename,
           newExtension || ''
+        );
+
+        shouldDisplayDelimiter.value = isCSVFormat(
+          values.value.format?.value ?? ''
         );
       }
     );
@@ -175,7 +211,9 @@ export default defineComponent({
       getExportListUrl,
       strategyOptionList,
       formatOptionList,
+      delimiterOptionList,
       isContentLoading,
+      shouldDisplayDelimiter,
     };
   },
 });

@@ -18,6 +18,9 @@ const EN = {
   createdErrorMessage: 'Export creation has been failed',
   filename: 'File name',
   format: 'Format',
+  delimiter: 'Delimiter',
+  comma: 'Comma',
+  semicolon: 'Semicolon',
 };
 
 export default EN;

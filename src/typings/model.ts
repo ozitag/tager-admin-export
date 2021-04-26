@@ -23,4 +23,5 @@ export interface ExportCreatePayload {
   strategy: string;
   filename: string;
   format: string;
+  delimiter: string;
 }

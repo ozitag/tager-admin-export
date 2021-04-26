@@ -6,6 +6,7 @@ export type FormValues = {
   strategy: OptionType | null;
   filename: string;
   format: OptionType | null;
+  delimiter: OptionType | null;
 };
 
 export function convertExportFormValuesToCreationPayload(
@@ -15,5 +16,6 @@ export function convertExportFormValuesToCreationPayload(
     strategy: values.strategy?.value ?? '',
     filename: values.filename,
     format: values.format?.value ?? '',
+    delimiter: values.delimiter?.value ?? '',
   };
 }
