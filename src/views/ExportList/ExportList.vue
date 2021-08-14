@@ -1,9 +1,9 @@
 <template>
   <page
-    :title="t('export:export')"
+    :title="$t('export:export')"
     :header-buttons="[
       {
-        text: t('export:newExport'),
+        text: $t('export:newExport'),
         href: getExportFormUrl({ exportId: 'create' }),
       },
     ]"
@@ -23,14 +23,7 @@
       @change="handleChange"
     >
       <template v-slot:cell(history)="{ row }">
-        <ul v-if="row.history">
-          <li v-for="(history, index) of row.history" :key="index">
-            <span :style="{ width: '100px', display: 'inline-block' }">{{
-              history.status
-            }}</span>
-            {{ dateTimeFormat(history.datetime) }}
-          </li>
-        </ul>
+        <CellHistory :history="row.history" />
       </template>
     </data-table>
   </page>
@@ -49,8 +42,11 @@ import { getExportList } from '../../services/requests';
 import { ExportType } from '../../typings/model';
 import { getExportFormUrl } from '../../utils/paths';
 
+import { CellHistory } from './components/CellHistory';
+
 export default defineComponent({
   name: 'ExportList',
+  components: { CellHistory },
   setup(props, context) {
     const { t } = useTranslation(context);
 
@@ -125,19 +121,6 @@ export default defineComponent({
       },
     ];
 
-    function dateTimeFormat(value: number | string | Date): string {
-      const options = {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-      };
-      const date = new Date(value);
-      return new Intl.DateTimeFormat('ru-RU', options).format(date);
-    }
-
     return {
       columnDefs,
       getExportFormUrl,
@@ -149,8 +132,6 @@ export default defineComponent({
       pageSize,
       pageCount,
       pageNumber,
-      t,
-      dateTimeFormat,
     };
   },
 });

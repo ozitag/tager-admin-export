@@ -1,43 +1,47 @@
 <template>
   <page :title="$t('export:newExport')" :is-content-loading="isContentLoading">
     <form novalidate @submit.prevent>
-      <template>
-        <form-field-select
-          v-model="values.strategy"
-          :options="strategyOptionList"
-          :error="errors.strategy"
-          :label="$t('export:exportType')"
-          name="exportType"
+      <form-field-select
+        v-model="values.strategy"
+        :options="strategyOptionList"
+        :error="errors.strategy"
+        :label="$t('export:exportType')"
+        name="exportType"
+      />
+
+      <div class="field">
+        <form-field
+          v-model="values.filename"
+          :error="errors.filename"
+          :label="$t('export:filename')"
+          name="filename"
         />
 
-        <div class="field">
-          <form-field
-            v-model="values.filename"
-            :error="errors.filename"
-            :label="$t('export:filename')"
-            name="filename"
-          />
+        <form-field-select
+          v-model="values.format"
+          :options="formatOptionList"
+          :error="errors.format"
+          :label="$t('export:format')"
+          name="format"
+        />
 
-          <form-field-select
-            v-model="values.format"
-            :options="formatOptionList"
-            :error="errors.format"
-            :label="$t('export:format')"
-            name="format"
-          />
+        <div />
 
-          <div />
+        <form-field-select
+          v-if="shouldDisplayDelimiter"
+          v-model="values.delimiter"
+          :options="delimiterOptionList"
+          :error="errors.delimiter"
+          :label="$t('export:delimiter')"
+          name="delimiter"
+        />
+      </div>
 
-          <form-field-select
-            v-if="shouldDisplayDelimiter"
-            v-model="values.delimiter"
-            :options="delimiterOptionList"
-            :error="errors.delimiter"
-            :label="$t('export:delimiter')"
-            name="delimiter"
-          />
-        </div>
-      </template>
+      <DynamicField
+        v-for="field of templateValues"
+        :key="field.config.name"
+        :field="field"
+      />
     </form>
 
     <template v-slot:footer>
@@ -62,59 +66,50 @@ import {
   FormFooter,
   useTranslation,
 } from '@tager/admin-ui';
+import {
+  DynamicField,
+  FieldConfigUnion,
+  FieldUnion,
+  universalFieldUtils,
+} from '@tager/admin-dynamic-field';
 
-import { createExport, getStrategyList } from '../../services/requests';
+import { createExport, getStrategies } from '../../services/requests';
 import { getExportListUrl } from '../../utils/paths';
 import { replaceFileExtension } from '../../utils/common';
 
 import {
   convertExportFormValuesToCreationPayload,
-  FormValues,
+  convertStrategiesToStrategyOptionList,
+  formatOptionList,
+  isCSVFormat,
 } from './ExportForm.helpers';
+import { FormValues } from './ExportForm.types';
 
 export default defineComponent({
   name: 'ExportForm',
-  components: { FormFooter },
+  components: { DynamicField, FormFooter },
   setup(props, context) {
     const { t } = useTranslation(context);
 
     /** Strategies */
 
     const [
-      fetchStrategyList,
-      { data: strategyList, loading: isStrategyListLoading },
+      fetchStrategies,
+      { data: strategies, loading: isStrategiesLoading },
     ] = useResource({
-      fetchResource: getStrategyList,
+      fetchResource: getStrategies,
       initialValue: [],
       context,
-      resourceName: 'Strategy List',
+      resourceName: 'Strategies',
     });
 
     const strategyOptionList = computed<Array<OptionType>>(() =>
-      strategyList.value.map<OptionType>((strategy) => ({
-        value: strategy.id,
-        label: strategy.name,
-      }))
+      convertStrategiesToStrategyOptionList(strategies.value)
     );
 
     onMounted(() => {
-      fetchStrategyList();
+      fetchStrategies();
     });
-
-    /** Format **/
-
-    const formatOptionList = computed<Array<OptionType>>(() => [
-      { value: 'CSV', label: 'CSV' },
-      { value: 'XLS', label: 'XLS' },
-      { value: 'XML', label: 'XML' },
-      { value: 'YAML', label: 'YAML' },
-      { value: 'JSON', label: 'JSON' },
-      { value: 'TXT', label: 'TXT' },
-    ]);
-
-    function isCSVFormat(format: string): boolean {
-      return format === 'CSV';
-    }
 
     /** Delimiter **/
 
@@ -125,7 +120,7 @@ export default defineComponent({
 
     /** Form state */
 
-    const defaultExtension = formatOptionList.value[0];
+    const defaultExtension = formatOptionList[0];
     const defaultDelimiter = delimiterOptionList.value[0];
 
     const errors = ref<Record<string, string>>({});
@@ -136,6 +131,31 @@ export default defineComponent({
       delimiter: defaultDelimiter,
     });
     const isSubmitting = ref<boolean>(false);
+    const templateValues = ref<Array<FieldUnion>>([]);
+
+    function updateTemplateValues() {
+      const selectedStrategy = strategies.value.find(
+        (strategy) => strategy.id === values.value.strategy?.value
+      );
+
+      const fieldTemplateList: Array<FieldConfigUnion> =
+        selectedStrategy?.fields ?? [];
+
+      templateValues.value = fieldTemplateList.map((fieldConfig) =>
+        universalFieldUtils.createFormField(fieldConfig, null)
+      );
+    }
+
+    watch(
+      () => values.value.strategy,
+      () => {
+        updateTemplateValues();
+      }
+    );
+
+    onMounted(() => {
+      updateTemplateValues();
+    });
 
     const shouldDisplayDelimiter = ref<boolean>(
       isCSVFormat(values.value.format?.value ?? '')
@@ -161,7 +181,8 @@ export default defineComponent({
       isSubmitting.value = true;
 
       const creationPayload = convertExportFormValuesToCreationPayload(
-        values.value
+        values.value,
+        templateValues.value
       );
 
       createExport(creationPayload)
@@ -199,9 +220,7 @@ export default defineComponent({
 
     /** Is content loading **/
 
-    const isContentLoading = computed<boolean>(
-      () => isStrategyListLoading.value
-    );
+    const isContentLoading = computed<boolean>(() => isStrategiesLoading.value);
 
     return {
       values,
@@ -214,6 +233,7 @@ export default defineComponent({
       delimiterOptionList,
       isContentLoading,
       shouldDisplayDelimiter,
+      templateValues,
     };
   },
 });
