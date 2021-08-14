@@ -13,7 +13,7 @@ export function getExportList(params?: {
   return request.get({ path: '/admin/tager/export', params });
 }
 
-export function getStrategyList(): Promise<ResponseBody<Array<StrategyType>>> {
+export function getStrategies(): Promise<ResponseBody<Array<StrategyType>>> {
   return request.get({ path: '/admin/tager/export/strategies' });
 }
 
