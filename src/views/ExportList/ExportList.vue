@@ -1,54 +1,58 @@
 <template>
-  <page
-    :title="$t('export:export')"
-    :header-buttons="[
+  <Page
+      :title="$i18n.t('export:export')"
+      :header-buttons="[
       {
-        text: $t('export:newExport'),
+        text: $i18n.t('export:newExport'),
         href: getExportFormUrl({ exportId: 'create' }),
       },
     ]"
   >
-    <data-table
-      :column-defs="columnDefs"
-      :row-data="rowData"
-      :loading="isRowDataLoading"
-      :error-message="errorMessage"
-      :pagination="{
+    <DataTable
+        :column-defs="columnDefs"
+        :row-data="rowData"
+        :loading="isRowDataLoading"
+        :error-message="errorMessage"
+        :pagination="{
         pageSize,
         pageCount,
         pageNumber,
         disabled: isRowDataLoading,
       }"
-      :use-search="false"
-      @change="handleChange"
+        :use-search="false"
+        @change="handleChange"
     >
-      <template v-slot:cell(history)="{ row }">
-        <CellHistory :history="row.history" />
+      <template #cell(history)="{ row }">
+        <CellHistory :history="row.history"/>
       </template>
-    </data-table>
-  </page>
+    </DataTable>
+  </Page>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@vue/composition-api';
-
+import {defineComponent, onMounted} from "vue";
+import {useI18n} from '@tager/admin-services';
+import {Page} from "@tager/admin-layout";
 import {
-  ColumnDefinition,
+  type ColumnDefinition,
+  DataTable,
   useDataTable,
-  useTranslation,
-} from '@tager/admin-ui';
+} from "@tager/admin-ui";
 
-import { getExportList } from '../../services/requests';
-import { ExportType } from '../../typings/model';
-import { getExportFormUrl } from '../../utils/paths';
+import {getExportList} from '../../services/requests';
+import {ExportType} from '../../typings/model';
+import {getExportFormUrl} from '../../utils/paths';
 
-import { CellHistory } from './components/CellHistory';
+import {CellHistory} from './components/CellHistory';
 
 export default defineComponent({
   name: 'ExportList',
-  components: { CellHistory },
-  setup(props, context) {
-    const { t } = useTranslation(context);
+  components: {
+    Page, CellHistory,
+    DataTable,
+  },
+  setup() {
+    const {t} = useI18n();
 
     const {
       fetchEntityList: fetchExportList,
@@ -62,12 +66,11 @@ export default defineComponent({
       pageNumber,
     } = useDataTable<ExportType>({
       fetchEntityList: (params) =>
-        getExportList({
-          pageNumber: params.pageNumber,
-          pageSize: params.pageSize,
-        }),
+          getExportList({
+            pageNumber: params.pageNumber,
+            pageSize: params.pageSize,
+          }),
       initialValue: [],
-      context,
       resourceName: 'Export list',
       pageSize: 100,
     });
@@ -81,22 +84,22 @@ export default defineComponent({
         id: 1,
         name: 'ID',
         field: 'id',
-        style: { width: '50px', textAlign: 'center' },
-        headStyle: { width: '50px', textAlign: 'center' },
+        style: {width: '50px', textAlign: 'center'},
+        headStyle: {width: '50px', textAlign: 'center'},
       },
       {
         id: 2,
         name: t('export:type'),
         field: 'strategy',
-        style: { width: '15%' },
-        headStyle: { width: '15%' },
+        style: {width: '15%'},
+        headStyle: {width: '15%'},
       },
       {
         id: 3,
         name: t('export:status'),
         field: 'status',
-        style: { width: '15%' },
-        headStyle: { width: '15%' },
+        style: {width: '15%'},
+        headStyle: {width: '15%'},
       },
       {
         id: 4,
@@ -108,16 +111,16 @@ export default defineComponent({
         id: 5,
         name: t('export:log'),
         field: 'history',
-        style: { width: '25%' },
-        headStyle: { width: '25%' },
+        style: {width: '25%'},
+        headStyle: {width: '25%'},
       },
       {
         id: 6,
         name: t('export:file'),
         field: 'file',
         type: 'file',
-        style: { width: '150px', textAlign: 'center' },
-        headStyle: { width: '150px', textAlign: 'center' },
+        style: {width: '150px', textAlign: 'center'},
+        headStyle: {width: '150px', textAlign: 'center'},
       },
     ];
 

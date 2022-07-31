@@ -1,70 +1,69 @@
 <template>
-  <page :title="$t('export:newExport')" :is-content-loading="isContentLoading">
+  <Page :title="$i18n.t('export:newExport')" :is-content-loading="isContentLoading">
     <form novalidate @submit.prevent>
-      <form-field-select
-        v-model="values.strategy"
-        :options="strategyOptionList"
-        :error="errors.strategy"
-        :label="$t('export:exportType')"
-        name="exportType"
+      <FormFieldSelect
+          v-model:value="values.strategy"
+          name="exportType"
+          :error="errors.strategy"
+          :label="$i18n.t('export:exportType')"
+          :options="strategyOptionList"
       />
 
       <div class="field">
-        <form-field
-          v-model="values.filename"
-          :error="errors.filename"
-          :label="$t('export:filename')"
-          name="filename"
+        <FormField
+            v-model:value="values.filename"
+            :error="errors.filename"
+            :label="$i18n.t('export:filename')"
+            name="filename"
         />
 
-        <form-field-select
-          v-model="values.format"
-          :options="formatOptionList"
-          :error="errors.format"
-          :label="$t('export:format')"
-          name="format"
+        <FormFieldSelect
+            v-model:value="values.format"
+            :options="formatOptionList"
+            :error="errors.format"
+            :label="$i18n.t('export:format')"
+            name="format"
         />
 
-        <div />
-
-        <form-field-select
-          v-if="shouldDisplayDelimiter"
-          v-model="values.delimiter"
-          :options="delimiterOptionList"
-          :error="errors.delimiter"
-          :label="$t('export:delimiter')"
-          name="delimiter"
+        <FormFieldSelect
+            v-if="shouldDisplayDelimiter"
+            v-model:value="values.delimiter"
+            :options="delimiterOptionList"
+            :error="errors.delimiter"
+            :label="$i18n.t('export:delimiter')"
+            name="delimiter"
         />
       </div>
-
       <DynamicField
-        v-for="field of templateValues"
-        :key="field.config.name"
-        :field="field"
+          v-for="field of templateValues"
+          :key="field.config.name"
+          :field="field"
       />
     </form>
 
-    <template v-slot:footer>
+    <template #footer>
       <FormFooter
-        :back-href="getExportListUrl()"
-        :on-submit="submitForm"
-        :is-submitting="isSubmitting"
-        :is-creation="true"
+          :back-href="getExportListUrl()"
+          @submit="submitForm"
+          :is-submitting="isSubmitting"
+          :is-creation="true"
       />
     </template>
-  </page>
+  </Page>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from '@vue/composition-api';
-import { computed, onMounted, ref } from '@vue/composition-api';
+import {defineComponent, onMounted, watch, ref, computed} from "vue";
+import {useRoute, useRouter} from "vue-router";
 
-import { convertRequestErrorToMap, useResource } from '@tager/admin-services';
+import {useI18n, navigateBack, useToast} from '@tager/admin-services';
+import {Page} from "@tager/admin-layout";
+
+import {convertRequestErrorToMap, useResource} from '@tager/admin-services';
 import {
   OptionType,
   TagerFormSubmitEvent,
-  FormFooter,
-  useTranslation,
+  FormFooter, FormField, FormFieldSelect
 } from '@tager/admin-ui';
 import {
   DynamicField,
@@ -73,9 +72,9 @@ import {
   universalFieldUtils,
 } from '@tager/admin-dynamic-field';
 
-import { createExport, getStrategies } from '../../services/requests';
-import { getExportListUrl } from '../../utils/paths';
-import { replaceFileExtension } from '../../utils/common';
+import {createExport, getStrategies} from '../../services/requests';
+import {getExportListUrl} from '../../utils/paths';
+import {replaceFileExtension} from '../../utils/common';
 
 import {
   convertExportFormValuesToCreationPayload,
@@ -83,28 +82,34 @@ import {
   formatOptionList,
   isCSVFormat,
 } from './ExportForm.helpers';
-import { FormValues } from './ExportForm.types';
+import {FormValues} from './ExportForm.types';
+
 
 export default defineComponent({
   name: 'ExportForm',
-  components: { DynamicField, FormFooter },
-  setup(props, context) {
-    const { t } = useTranslation(context);
+  components: {
+    DynamicField, FormFooter,
+    Page, FormField, FormFieldSelect
+  },
+  setup() {
+    const {t} = useI18n();
+    const route = useRoute();
+    const router = useRouter();
+    const toast = useToast();
 
     /** Strategies */
 
     const [
       fetchStrategies,
-      { data: strategies, loading: isStrategiesLoading },
+      {data: strategies, loading: isStrategiesLoading},
     ] = useResource({
       fetchResource: getStrategies,
       initialValue: [],
-      context,
       resourceName: 'Strategies',
     });
 
     const strategyOptionList = computed<Array<OptionType>>(() =>
-      convertStrategiesToStrategyOptionList(strategies.value)
+        convertStrategiesToStrategyOptionList(strategies.value)
     );
 
     onMounted(() => {
@@ -114,8 +119,8 @@ export default defineComponent({
     /** Delimiter **/
 
     const delimiterOptionList = computed<Array<OptionType>>(() => [
-      { value: ',', label: t('export:comma') },
-      { value: ';', label: t('export:semicolon') },
+      {value: ',', label: t('export:comma')},
+      {value: ';', label: t('export:semicolon')},
     ]);
 
     /** Form state */
@@ -135,22 +140,22 @@ export default defineComponent({
 
     function updateTemplateValues() {
       const selectedStrategy = strategies.value.find(
-        (strategy) => strategy.id === values.value.strategy?.value
+          (strategy) => strategy.id === values.value.strategy?.value
       );
 
       const fieldTemplateList: Array<FieldConfigUnion> =
-        selectedStrategy?.fields ?? [];
+          selectedStrategy?.fields ?? [];
 
       templateValues.value = fieldTemplateList.map((fieldConfig) =>
-        universalFieldUtils.createFormField(fieldConfig, null)
+          universalFieldUtils.createFormField(fieldConfig, null)
       );
     }
 
     watch(
-      () => values.value.strategy,
-      () => {
-        updateTemplateValues();
-      }
+        () => values.value.strategy,
+        () => {
+          updateTemplateValues();
+        }
     );
 
     onMounted(() => {
@@ -158,64 +163,64 @@ export default defineComponent({
     });
 
     const shouldDisplayDelimiter = ref<boolean>(
-      isCSVFormat(values.value.format?.value ?? '')
+        isCSVFormat(values.value.format?.value ?? '')
     );
 
     watch(
-      () => values.value.format,
-      () => {
-        const newExtension = values.value.format?.value.toLowerCase();
+        () => values.value.format,
+        () => {
+          const newExtension = values.value.format?.value.toLowerCase();
 
-        values.value.filename = replaceFileExtension(
-          values.value.filename,
-          newExtension || ''
-        );
+          values.value.filename = replaceFileExtension(
+              values.value.filename,
+              newExtension || ''
+          );
 
-        shouldDisplayDelimiter.value = isCSVFormat(
-          values.value.format?.value ?? ''
-        );
-      }
+          shouldDisplayDelimiter.value = isCSVFormat(
+              values.value.format?.value ?? ''
+          );
+        }
     );
 
     function submitForm(event: TagerFormSubmitEvent) {
       isSubmitting.value = true;
 
       const creationPayload = convertExportFormValuesToCreationPayload(
-        values.value,
-        templateValues.value
+          values.value,
+          templateValues.value
       );
 
       createExport(creationPayload)
-        .then(() => {
-          errors.value = {};
+          .then(() => {
+            errors.value = {};
 
-          if (
-            event.type === 'create' ||
-            event.type === 'save' ||
-            event.type === 'create_exit' ||
-            event.type === 'save_exit'
-          ) {
-            context.root.$router.push(getExportListUrl());
-          }
+            if (
+                event.type === 'create' ||
+                event.type === 'save' ||
+                event.type === 'create_exit' ||
+                event.type === 'save_exit'
+            ) {
+              navigateBack(router, getExportListUrl());
+            }
 
-          context.root.$toast({
-            variant: 'success',
-            title: t('export:success'),
-            body: t('export:createdSuccessMessage'),
+            toast.show({
+              variant: 'success',
+              title: t('export:success'),
+              body: t('export:createdSuccessMessage'),
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+            errors.value = convertRequestErrorToMap(error);
+            toast.show({
+              variant: 'danger',
+              title: t('export:error'),
+              body: t('export:createdErrorMessage'),
+            });
+          })
+          .finally(() => {
+            isSubmitting.value = false;
           });
-        })
-        .catch((error) => {
-          console.error(error);
-          errors.value = convertRequestErrorToMap(error);
-          context.root.$toast({
-            variant: 'danger',
-            title: t('export:error'),
-            body: t('export:createdErrorMessage'),
-          });
-        })
-        .finally(() => {
-          isSubmitting.value = false;
-        });
     }
 
     /** Is content loading **/

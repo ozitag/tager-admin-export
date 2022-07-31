@@ -1,6 +1,5 @@
-const EN = {
+export const EN = {
   home: 'Home',
-  exportAndImport: 'Export / Import',
   export: 'Export',
   exportList: 'Export List',
   exportForm: 'Export Form',
@@ -22,5 +21,3 @@ const EN = {
   comma: 'Comma',
   semicolon: 'Semicolon',
 };
-
-export default EN;

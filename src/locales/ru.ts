@@ -1,8 +1,7 @@
-import EN from './en';
+import { EN } from './en';
 
-const RU: typeof EN = {
+export const RU: typeof EN = {
   home: 'Главная',
-  exportAndImport: 'Экспорт / Импорт',
   export: 'Экспорт',
   exportList: 'Список экспортов',
   exportForm: 'Форма экспорта',
@@ -24,5 +23,3 @@ const RU: typeof EN = {
   comma: 'Запятая',
   semicolon: 'Точка с запятой',
 };
-
-export default RU;

@@ -1,5 +1,3 @@
-import { computed } from '@vue/composition-api';
-
 import { OptionType } from '@tager/admin-ui';
 import { FieldUnion, universalFieldUtils } from '@tager/admin-dynamic-field';
 
