@@ -111,7 +111,7 @@ export default defineComponent({
         id: 5,
         name: t('export:log'),
         field: 'history',
-        style: {width: '25%'},
+        style: {width: '25%', whiteSpace: 'nowrap'},
         headStyle: {width: '25%'},
       },
       {
