@@ -6,6 +6,7 @@ export const RU: typeof EN = {
   exportList: 'Список экспортов',
   exportForm: 'Форма экспорта',
   type: 'Тип',
+  params: 'Параметры',
   exportType: 'Тип экспорта',
   status: 'Статус',
   message: 'Сообщение',

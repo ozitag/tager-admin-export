@@ -4,6 +4,7 @@ export const EN = {
   exportList: 'Export List',
   exportForm: 'Export Form',
   type: 'Type',
+  params: 'Params',
   exportType: 'Export type',
   status: 'status',
   message: 'Message',

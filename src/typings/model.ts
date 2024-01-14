@@ -17,6 +17,7 @@ export interface ExportType {
   readonly message: string | null;
   readonly history: Array<HistoryType>;
   readonly file: FileType | null;
+  readonly params: Record<string, string>;
 }
 
 export interface StrategyType {
