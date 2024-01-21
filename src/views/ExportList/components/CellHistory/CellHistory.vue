@@ -2,7 +2,7 @@
   <ul v-if="history.length > 0">
     <li v-for="(history, index) of history" :key="index">
       <span class="name">
-        {{ history.status }}
+        {{ getExportStatusLabel(history.status, $i18n.t) }}
       </span>
       {{ dateTimeFormat(history.datetime) }}
     </li>
@@ -10,12 +10,16 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
-import {dateTimeFormat} from './CellHistory.helpers';
-import {HistoryType} from "../../../../typings/model";
+import { defineComponent, PropType } from 'vue';
+
+import { HistoryType } from '../../../../typings/model';
+
+import { dateTimeFormat } from './CellHistory.helpers';
+import { getExportStatusLabel } from "../../ExportList.helpers";
 
 export default defineComponent({
   name: 'CellHistory',
+
   props: {
     history: {
       type: Array as PropType<HistoryType[]>,
@@ -25,6 +29,7 @@ export default defineComponent({
   setup() {
     return {
       dateTimeFormat,
+      getExportStatusLabel,
     };
   },
 });

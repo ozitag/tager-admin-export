@@ -23,4 +23,9 @@ export const RU: typeof EN = {
   delimiter: 'Разделитель',
   comma: 'Запятая',
   semicolon: 'Точка с запятой',
+
+  statusCreated: 'Создан',
+  statusInProgress: 'В процессе',
+  statusCompleted: 'Завершен',
+  statusFailure: 'Ошибка',
 };

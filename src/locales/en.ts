@@ -6,10 +6,10 @@ export const EN = {
   type: 'Type',
   params: 'Params',
   exportType: 'Export type',
-  status: 'status',
+  status: 'Status',
   message: 'Message',
   log: 'Log',
-  file: 'file',
+  file: 'File',
   newExport: 'New export',
   exportCreation: 'Export creation',
   success: 'Success',
@@ -21,4 +21,9 @@ export const EN = {
   delimiter: 'Delimiter',
   comma: 'Comma',
   semicolon: 'Semicolon',
+
+  statusCreated: 'Created',
+  statusInProgress: 'In Progress',
+  statusCompleted: 'Completed',
+  statusFailure: 'Failed',
 };

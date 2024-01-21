@@ -45,6 +45,7 @@ import { ExportType } from '../../typings/model';
 import { getExportFormUrl } from '../../utils/paths';
 
 import { CellHistory } from './components/CellHistory';
+import { getExportStatusLabel } from './ExportList.helpers';
 
 export default defineComponent({
   name: 'ExportList',
@@ -93,6 +94,7 @@ export default defineComponent({
         name: t('export:status'),
         field: 'status',
         width: '120px',
+        format: ({row}) => getExportStatusLabel(row.status, t)
       },
       {
         id: 3,

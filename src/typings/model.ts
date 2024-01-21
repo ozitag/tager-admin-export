@@ -5,15 +5,17 @@ import {
   OutgoingValueUnion,
 } from '@tager/admin-dynamic-field';
 
+export type ExportStatus = 'CREATED' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILURE';
+
 export interface HistoryType {
   readonly datetime: string;
-  readonly status: string;
+  readonly status: ExportStatus;
 }
 
 export interface ExportType {
   readonly id: number;
   readonly strategy: string;
-  readonly status: string;
+  readonly status: ExportStatus;
   readonly message: string | null;
   readonly history: Array<HistoryType>;
   readonly file: FileType | null;
