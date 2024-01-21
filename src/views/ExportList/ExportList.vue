@@ -141,6 +141,12 @@ export default defineComponent({
         field: 'file',
         type: 'file',
         width: '100px',
+        style:{
+          textAlign: 'center'
+        },
+        headStyle:{
+          textAlign: 'center'
+        }
       },
     ];
 
