@@ -1263,10 +1263,10 @@
     nanoid "^4.0.0"
     zod "^3.18.0"
 
-"@tager/admin-ui@^1.0.120":
-  version "1.0.120"
-  resolved "https://registry.yarnpkg.com/@tager/admin-ui/-/admin-ui-1.0.120.tgz#a8ead97c6079ba483082bb15cc1532afe3f658a9"
-  integrity sha512-UhzuAzq7C/WuwIpvcdEHSwcV5jrJ2C3yDbVs4+Xq/K6ZCoQ8CAf7x1PVKwbZZxiviUc0IeD52PUhCwtHcwqVfA==
+"@tager/admin-ui@^1.0.122":
+  version "1.0.122"
+  resolved "https://registry.yarnpkg.com/@tager/admin-ui/-/admin-ui-1.0.122.tgz#a6873f89a35583665b8005ac8399b209f30a4f6a"
+  integrity sha512-A0E2Wb6/GDgDJ7tHOWlQy7t2GIqAGP7VwQNrR+mWjCQa43nZBYoF9z4YwUTZKngUl8WsdA6KQZfzICNGzLkLww==
   dependencies:
     "@ckeditor/ckeditor5-vue" "^4.0.1"
     "@floating-ui/dom" "^0.4.5"
@@ -2633,15 +2633,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001093:
-  version "1.0.30001096"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001096.tgz#5a4541af5317dc21f91f5b24d453030a35f919c0"
-  integrity sha512-PFTw9UyVfbkcMEFs82q8XVlRayj7HKvnhu5BLcmjGpv+SNyiWasCcWXPGJuO0rK0dhLRDJmtZcJ+LHUfypbw1w==
-
-caniuse-lite@^1.0.30001370, caniuse-lite@^1.0.30001373:
-  version "1.0.30001373"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001373.tgz#2dc3bc3bfcb5d5a929bec11300883040d7b4b4be"
-  integrity sha512-pJYArGHrPp3TUqQzFYRmP/lwJlj8RCbVe3Gd3eJQkAV8SAC6b19XS9BjMvRdvaS8RMkaTN8ZhoHP6S1y8zzwEQ==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001093, caniuse-lite@^1.0.30001370, caniuse-lite@^1.0.30001373:
+  version "1.0.30001579"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001579.tgz"
+  integrity sha512-u5AUVkixruKHJjw/pj9wISlcMpgFWzSrczLZbrqBSxukQixmg0SJ5sZTpvaFvxU0HoQKd4yoyAogyrAz9pzJnA==
 
 case-sensitive-paths-webpack-plugin@^2.3.0:
   version "2.3.0"

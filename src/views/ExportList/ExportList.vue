@@ -98,7 +98,10 @@ export default defineComponent({
         id: 3,
         name: t('export:type'),
         field: 'strategy',
-        width: '150px',
+        width: '200px',
+        options: {
+          maxLength: 24,
+        },
       },
       {
         id: 4,
