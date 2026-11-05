@@ -1,6 +1,6 @@
-import { TranslateFunction } from '@tager/admin-services';
+import { type TranslateFunction } from '@tager/admin-services';
 
-import { ExportStatus } from '../../typings/model';
+import { type ExportStatus } from '../../typings/model';
 
 export function getExportStatusLabel(
   status: ExportStatus,

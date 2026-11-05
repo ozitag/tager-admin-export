@@ -1,8 +1,8 @@
-import { FileType } from '@tager/admin-services';
+import { type FileType } from '@tager/admin-services';
 import {
-  FieldConfigUnion,
-  FieldShortType,
-  OutgoingValueUnion,
+  type FieldConfigUnion,
+  type FieldShortType,
+  type OutgoingValueUnion,
 } from '@tager/admin-dynamic-field';
 
 export type ExportStatus = 'CREATED' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILURE';

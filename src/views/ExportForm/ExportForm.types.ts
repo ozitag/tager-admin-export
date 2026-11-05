@@ -1,4 +1,4 @@
-import { OptionType } from '@tager/admin-ui';
+import { type OptionType } from '@tager/admin-ui';
 
 export interface FormValues {
   strategy: OptionType | null;

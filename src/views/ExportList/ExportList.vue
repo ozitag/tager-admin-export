@@ -41,7 +41,7 @@ import {
 } from '@tager/admin-ui';
 
 import { getExportList } from '../../services/requests';
-import { ExportType } from '../../typings/model';
+import { type ExportType } from '../../typings/model';
 import { getExportFormUrl } from '../../utils/paths';
 
 import { CellHistory } from './components/CellHistory';

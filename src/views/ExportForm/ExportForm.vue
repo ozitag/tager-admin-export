@@ -61,14 +61,14 @@ import {Page} from "@tager/admin-layout";
 
 import {convertRequestErrorToMap, useResource} from '@tager/admin-services';
 import {
-  OptionType,
-  TagerFormSubmitEvent,
+  type OptionType,
+  type TagerFormSubmitEvent,
   FormFooter, FormField, FormFieldSelect
 } from '@tager/admin-ui';
 import {
   DynamicField,
-  FieldConfigUnion,
-  FieldUnion,
+  type FieldConfigUnion,
+  type FieldUnion,
   universalFieldUtils,
 } from '@tager/admin-dynamic-field';
 
@@ -82,7 +82,7 @@ import {
   formatOptionList,
   isCSVFormat,
 } from './ExportForm.helpers';
-import {FormValues} from './ExportForm.types';
+import {type FormValues} from './ExportForm.types';
 
 
 export default defineComponent({
