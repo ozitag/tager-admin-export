@@ -44,9 +44,9 @@
     <template #footer>
       <FormFooter
           :back-href="getExportListUrl()"
-          @submit="submitForm"
           :is-submitting="isSubmitting"
           :is-creation="true"
+          @submit="submitForm"
       />
     </template>
   </Page>
@@ -58,7 +58,6 @@ import {useRoute, useRouter} from "vue-router";
 
 import {useI18n, navigateBack, useToast} from '@tager/admin-services';
 import {Page} from "@tager/admin-layout";
-
 import {convertRequestErrorToMap, useResource} from '@tager/admin-services';
 import {
   type OptionType,

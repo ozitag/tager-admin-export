@@ -13,9 +13,9 @@
 import { defineComponent, type PropType } from 'vue';
 
 import { type HistoryType } from '../../../../typings/model';
+import { getExportStatusLabel } from "../../ExportList.helpers";
 
 import { dateTimeFormat } from './CellHistory.helpers';
-import { getExportStatusLabel } from "../../ExportList.helpers";
 
 export default defineComponent({
   name: 'CellHistory',
