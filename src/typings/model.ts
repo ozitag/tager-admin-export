@@ -12,7 +12,7 @@ export interface HistoryType {
   readonly status: ExportStatus;
 }
 
-export interface ExportType {
+export type ExportType = {
   readonly id: number;
   readonly strategy: string;
   readonly status: ExportStatus;
